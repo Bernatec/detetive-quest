@@ -1,0 +1,52 @@
+import random
+
+class Jogador:
+    def __init__(self, nome):
+        self.nome = nome
+        self.vida = 100
+        self.municao = 5
+        self.x = random.randint(0, 4)
+        self.y = random.randint(0, 4)
+
+    def mover(self, direcao):
+        if direcao == "cima" and self.x > 0:
+            self.x -= 1
+        elif direcao == "baixo" and self.x < 4:
+            self.x += 1
+        elif direcao == "esquerda" and self.y > 0:
+            self.y -= 1
+        elif direcao == "direita" and self.y < 4:
+            self.y += 1
+        else:
+            print("Movimento inválido ou fora do mapa.")
+
+    def atacar(self, outro):
+        if self.municao <= 0:
+            print(f"{self.nome} está sem munição!")
+            return
+        if abs(self.x - outro.x) + abs(self.y - outro.y) == 1:
+            outro.vida -= 20
+            self.municao -= 1
+            print(f"{self.nome} atacou {outro.nome}! Vida de {outro.nome}: {outro.vida}")
+        else:
+            print(f"{outro.nome} está fora de alcance!")
+
+    def status(self):
+        print(f"{self.nome} - Vida: {self.vida}, Munição: {self.municao}, Posição: ({self.x}, {self.y})")
+
+# Simulação
+j1 = Jogador("Thompson")
+j2 = Jogador("Rival")
+
+print("🎮 Início da partida!")
+j1.status()
+j2.status()
+
+j1.mover("direita")
+j1.atacar(j2)
+j2.mover("esquerda")
+j2.atacar(j1)
+
+print("\n🔍 Status final:")
+j1.status()
+j2.status()
